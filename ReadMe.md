@@ -1,2 +1,2 @@
 # Spinning LED's
-spiiiiiining leds... self explaining
+spinning leds... self explanitory
