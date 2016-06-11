@@ -142,7 +142,7 @@ Serial.begin(9600);
     pinMode(i, OUTPUT);
   }
 }
-bool folge[8*8][12]; //max. letters to display
+bool folge[4*8][12]; //max. letters to display
 int charlength;
 void create_text(String text)
 {
@@ -154,21 +154,20 @@ void create_text(String text)
       for(int g = 0; g < 12; g ++)
       {
         char c = text.charAt(i)-32;
-        folge[i*8+r][g] = SmallFont[c*12+g];
+        folge[i*8+r][g] = bitRead(SmallFont[c*12+g], r);
       }
     }
   }
 }
-int incomingByte = 0;
 void loop() {
-if (Serial.available() > 0) {
-                 // read the incoming byte:
-                 incomingByte = Serial.read();
+ String content = "";
+  char character;
 
-                 // say what you got:
-                 Serial.print("I received: ");
-                 Serial.println(incomingByte, DEC);
-         }
+  while(Serial.available() > 0) {
+      character = Serial.read();
+      content.concat(character);
+      create_text(content);
+  }
   for (int i = 0; i < charlength; i ++)
   {
     for (int j = 0; j < 12; j ++)
@@ -178,11 +177,11 @@ if (Serial.available() > 0) {
       else
         leds[j].an();
     }
-    int akt_time=micros();
+    delay(1);
+   /* int akt_time=micros();
     do
     {
     }
-    while(akt_time+750>micros())
+    while(akt_time+750>micros());*/
   }
 }
-
